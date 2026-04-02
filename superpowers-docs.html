@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superpowers — Documentação</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --accent: #b8f94a;
+    --accent2: #7cf0c8;
+    --accent3: #f9a84a;
+    --text: #e8e8e8;
+    --muted: #666;
+    --code-bg: #0d1117;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem;
+    height: 56px;
+  }
+  .nav-logo { font-weight: 800; font-size: 1rem; color: var(--accent); letter-spacing: -0.02em; }
+  .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+  .nav-links a {
+    font-size: 0.8rem; color: var(--muted); text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 2rem 80px;
+    max-width: 960px; margin: 0 auto;
+    position: relative;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 12px; border-radius: 2px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 1.1rem; color: #aaa;
+    max-width: 580px; margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+  .hero-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .badge.green { border-color: var(--accent); color: var(--accent); }
+  .badge.teal  { border-color: var(--accent2); color: var(--accent2); }
+  .badge.orange{ border-color: var(--accent3); color: var(--accent3); }
+
+  /* ── SECTIONS ── */
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 2rem; font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1rem; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── INSTALL BLOCK ── */
+  .install-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+  .install-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 10px 16px;
+    background: #0f0f0f;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.red { background: #ff5f57; }
+  .dot.yellow { background: #febc2e; }
+  .dot.green { background: #28c840; }
+  .install-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    margin-left: auto;
+  }
+  .install-body { padding: 1.25rem 1.5rem; }
+  .cmd-line {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+  .cmd-line:last-child { margin-bottom: 0; }
+  .prompt { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; user-select: none; }
+  .cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+  }
+  .cmd .slash { color: var(--accent3); }
+  .cmd .arg { color: var(--accent2); }
+  .copy-btn {
+    margin-left: auto;
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; padding: 3px 10px; border-radius: 3px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── WORKFLOW PIPELINE ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+  .pipeline-step {
+    background: var(--surface);
+    padding: 1.25rem 1rem;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .pipeline-step:hover, .pipeline-step.active { background: var(--surface2); }
+  .pipeline-step.active .step-num { color: var(--accent); }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; color: var(--muted);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .step-name {
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .step-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+  }
+
+  .step-detail {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .step-detail.visible { display: block; }
+  .step-detail h4 {
+    font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .step-detail p { color: #aaa; font-size: 0.9rem; margin-bottom: 1rem; }
+  .step-detail .rules { display: flex; flex-direction: column; gap: 0.5rem; }
+  .rule {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    font-size: 0.85rem; color: var(--text);
+  }
+  .rule::before {
+    content: '→';
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── SKILLS GRID ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+  .skill-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .skill-card:hover { background: var(--surface2); }
+  .skill-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .skill-icon {
+    width: 32px; height: 32px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .skill-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .skill-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .skill-desc { font-size: 0.82rem; color: #888; line-height: 1.6; }
+  .skill-trigger {
+    margin-top: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+  }
+  .skill-trigger span { color: var(--accent3); }
+
+  /* ── CI/CD ── */
+  .yaml-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .yaml-header {
+    display: flex; align-items: center;
+    padding: 10px 16px;
+    background: #0f0f0f;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--muted);
+    gap: 0.5rem;
+  }
+  .yaml-header .file { color: var(--accent2); }
+  pre {
+    padding: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: #cdd6f4;
+  }
+  .y-key { color: #89b4fa; }
+  .y-val { color: #a6e3a1; }
+  .y-str { color: #f9e2af; }
+  .y-com { color: #585b70; font-style: italic; }
+  .y-sym { color: #cba6f7; }
+
+  /* ── MULTI-AGENT ── */
+  .agent-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    margin: 2rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 2;
+  }
+  .tree-line { color: var(--muted); }
+  .tree-file { color: var(--text); }
+  .tree-green { color: var(--accent); }
+  .tree-teal  { color: var(--accent2); }
+  .tree-orange{ color: var(--accent3); }
+
+  /* ── SKILLS STRUCTURE ── */
+  .skills-dir {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 2;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(184,249,74,0.05);
+    padding: 1rem 1.25rem;
+    border-radius: 0 4px 4px 0;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+    color: #bbb;
+  }
+  .callout strong { color: var(--accent); }
+
+  .callout.orange {
+    border-color: var(--accent3);
+    background: rgba(249,168,74,0.05);
+  }
+  .callout.orange strong { color: var(--accent3); }
+
+  /* ── QUICK REF TABLE ── */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.85rem;
+  }
+  th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #1a1a1a;
+    color: #ccc;
+    vertical-align: top;
+  }
+  td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent2);
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+  .tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; padding: 0.6rem 1.2rem;
+    cursor: pointer; color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">⚡ Superpowers</span>
+  <div class="nav-links">
+    <a href="#setup">Setup</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#skills">Skills</a>
+    <a href="#multi-agent">Multi-Agent</a>
+    <a href="#cicd">CI/CD</a>
+    <a href="#estrutura">Estrutura</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Plugin Claude Code · v3.4.0</div>
+  <h1>Superpowers<br><span>Documentation</span></h1>
+  <p>Framework de skills que transforma o Claude Code em um time inteiro de devs — com planejamento, TDD, subagentes paralelos e revisão automática.</p>
+  <div class="hero-badges">
+    <span class="badge green">120k+ GitHub Stars</span>
+    <span class="badge teal">Marketplace Oficial Anthropic</span>
+    <span class="badge orange">MIT License</span>
+    <span class="badge">Jesse Vincent · Prime Radiant</span>
+  </div>
+</div>
+
+<!-- SETUP -->
+<section id="setup">
+  <div class="container">
+    <div class="section-label">01 — Instalação</div>
+    <h2>Setup</h2>
+    <p style="color:#aaa; margin-bottom:2rem; font-size:0.95rem;">Dois comandos dentro do Claude Code. Sair e abrir novamente. Pronto.</p>
+
+    <div class="install-block">
+      <div class="install-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="install-title">Claude Code — Terminal</span>
+      </div>
+      <div class="install-body">
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd"><span class="slash">/plugin</span> marketplace add <span class="arg">obra/superpowers-marketplace</span></span>
+          <button class="copy-btn" onclick="copyCmd(this, '/plugin marketplace add obra/superpowers-marketplace')">copiar</button>
+        </div>
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd"><span class="slash">/plugin</span> install <span class="arg">superpowers@superpowers-marketplace</span></span>
+          <button class="copy-btn" onclick="copyCmd(this, '/plugin install superpowers@superpowers-marketplace')">copiar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Confirmação:</strong> Ao reiniciar o Claude Code, você verá um prompt injetado com <code style="font-size:0.8rem; color:#ccc">&lt;session-start-hook&gt;</code> confirmando que as skills foram carregadas. Para atualizar: <code style="font-size:0.8rem; color:#ccc">/plugin update superpowers</code>
+    </div>
+
+    <h3 style="margin-top:2rem; margin-bottom:1rem;">Marketplace Oficial (alternativo)</h3>
+    <div class="install-block">
+      <div class="install-header">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="install-title">Marketplace Anthropic</span>
+      </div>
+      <div class="install-body">
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd"><span class="slash">/plugin</span> install <span class="arg">superpowers@claude-plugins-official</span></span>
+          <button class="copy-btn" onclick="copyCmd(this, '/plugin install superpowers@claude-plugins-official')">copiar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-label">02 — Pipeline</div>
+    <h2>O Workflow Completo</h2>
+    <p style="color:#aaa; margin-bottom:2rem; font-size:0.95rem;">7 etapas que se ativam automaticamente. Clique em cada etapa para ver os detalhes.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step active" onclick="showStep(0)">
+        <span class="step-num">Skill 1</span>
+        <span class="step-name">Brainstorm</span>
+        <span class="step-tag">Refina a ideia</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(1)">
+        <span class="step-num">Skill 2</span>
+        <span class="step-name">Git Worktree</span>
+        <span class="step-tag">Branch isolada</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(2)">
+        <span class="step-num">Skill 3</span>
+        <span class="step-name">Plano</span>
+        <span class="step-tag">Tarefas 2–5 min</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(3)">
+        <span class="step-num">Skill 4</span>
+        <span class="step-name">Execução</span>
+        <span class="step-tag">Subagentes paralelos</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(4)">
+        <span class="step-num">Skill 5</span>
+        <span class="step-name">TDD</span>
+        <span class="step-tag">Testes primeiro</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(5)">
+        <span class="step-num">Skill 6–7</span>
+        <span class="step-name">Review</span>
+        <span class="step-tag">Revisão automática</span>
+      </div>
+      <div class="pipeline-step" onclick="showStep(6)">
+        <span class="step-num">Skill 8</span>
+        <span class="step-name">Finalização</span>
+        <span class="step-tag">Merge, PR ou descarte</span>
+      </div>
+    </div>
+
+    <!-- Detail panels -->
+    <div id="step-0" class="step-detail visible">
+      <h4>🧠 Brainstorming</h4>
+      <p>Antes de qualquer código, o Claude entra em modo socrático. Faz perguntas específicas, explora alternativas e refina sua ideia bruta em um documento de design aprovado por você.</p>
+      <div class="rules">
+        <div class="rule">Nenhuma linha de código é escrita antes da aprovação do design doc</div>
+        <div class="rule">Apresenta o design em seções curtas para você validar cada parte</div>
+        <div class="rule">Salva o design document automaticamente para a próxima skill</div>
+        <div class="rule">Ativa automaticamente quando você descreve algo que quer construir</div>
+      </div>
+    </div>
+    <div id="step-1" class="step-detail">
+      <h4>🌿 Git Worktree</h4>
+      <p>Cria um ambiente de trabalho isolado em uma nova branch, antes de qualquer modificação no código. Garante que a main nunca seja tocada por código experimental.</p>
+      <div class="rules">
+        <div class="rule">Cria worktree com branch isolada automaticamente</div>
+        <div class="rule">Roda o setup do projeto e verifica baseline de testes limpos</div>
+        <div class="rule">Essencial para o setup de multi-agentes em paralelo</div>
+        <div class="rule">Cada agente opera na sua própria worktree independente</div>
+      </div>
+    </div>
+    <div id="step-2" class="step-detail">
+      <h4>📋 Writing Plans</h4>
+      <p>O design aprovado é quebrado em tarefas micro-precisas de 2–5 minutos cada. O plano é explícito o suficiente para que um junior sem contexto consiga seguir.</p>
+      <div class="rules">
+        <div class="rule">Cada tarefa tem: caminho exato de arquivo, código completo, comando de verificação</div>
+        <div class="rule">Inclui mensagens de commit pre-escritas seguindo as convenções do projeto</div>
+        <div class="rule">O arquivo de plano é o mecanismo de recuperação se a sessão morrer</div>
+        <div class="rule">Checkboxes marcados = estado da execução. Não é formalidade</div>
+      </div>
+    </div>
+    <div id="step-3" class="step-detail">
+      <h4>🤖 Execute Plan / Subagent-Driven</h4>
+      <p>Um subagente fresco é lançado para cada tarefa — sem acúmulo de contexto que causaria drift. Duas opções de execução disponíveis.</p>
+      <div class="rules">
+        <div class="rule">Opção 1: subagentes na sessão atual (tarefas simples com contexto compartilhado)</div>
+        <div class="rule">Opção 2: agentes orquestrados em sessões isoladas (projetos complexos)</div>
+        <div class="rule">Review em dois estágios após cada tarefa: spec compliance → code quality</div>
+        <div class="rule">Permite trabalho autônomo por horas sem desviar do plano</div>
+      </div>
+    </div>
+    <div id="step-4" class="step-detail">
+      <h4>🧪 Test-Driven Development</h4>
+      <p>A regra de ferro: nenhum código sem teste preventivo. O ciclo RED-GREEN-REFACTOR é obrigatório e não negociável.</p>
+      <div class="rules">
+        <div class="rule">Escreve o teste que falha → confirma que falha → escreve o mínimo de código para passar</div>
+        <div class="rule">Se Claude escrever código antes do teste, ele é deletado e reiniciado</div>
+        <div class="rule">Cobertura típica: 85–95% (nível enterprise)</div>
+        <div class="rule">Commit após cada ciclo RED-GREEN-REFACTOR completo</div>
+      </div>
+    </div>
+    <div id="step-5" class="step-detail">
+      <h4>🔍 Code Review (Skills 6 & 7)</h4>
+      <p>Entre tarefas, o agente code-reviewer avalia o trabalho contra o plano. Issues críticas bloqueam progresso até serem resolvidas.</p>
+      <div class="rules">
+        <div class="rule">Skill 6 (requesting): revisão proativa após cada tarefa implementada</div>
+        <div class="rule">Skill 7 (receiving): como o agente responde ao feedback e resolve issues</div>
+        <div class="rule">Severidade: crítico (bloqueia) / alto / médio / baixo</div>
+        <div class="rule">Também disponível on-demand: /superpowers:code-review</div>
+      </div>
+    </div>
+    <div id="step-6" class="step-detail">
+      <h4>✅ Finishing a Development Branch</h4>
+      <p>Quando todas as tarefas estão completas e testes passando, o Claude apresenta opções e limpa o worktree.</p>
+      <div class="rules">
+        <div class="rule">Verifica que todos os testes passam (unit, integration, e2e)</div>
+        <div class="rule">Apresenta opções: merge, criar PR, continuar trabalhando, ou descartar</div>
+        <div class="rule">Limpa o worktree após a decisão</div>
+        <div class="rule">Gera o PR com descrição baseada no plano e no design doc</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:2rem;">
+      <strong>Fluxo mínimo para tasks simples:</strong> Brainstorm → Write Plan → Execute Plan. O resto é ativado automaticamente conforme a complexidade da tarefa.
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">03 — Skills</div>
+    <h2>Todas as Skills</h2>
+    <p style="color:#aaa; margin-bottom:0.5rem; font-size:0.95rem;">Cada skill é um arquivo SKILL.md com instruções, checklists e diagramas de processo. O Claude carrega automaticamente a skill certa para o contexto certo.</p>
+
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(184,249,74,0.1)">🧠</div>
+          <div>
+            <div class="skill-name">brainstorming</div>
+          </div>
+        </div>
+        <div class="skill-title">Brainstorming Socrático</div>
+        <div class="skill-desc">Refina ideias brutas em design documents aprovados. Faz perguntas específicas, explora alternativas e apresenta o design em chunks legíveis.</div>
+        <div class="skill-trigger">Ativa: <span>"quero construir X", "preciso de uma feature"</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(124,240,200,0.1)">🌿</div>
+          <div><div class="skill-name">using-git-worktrees</div></div>
+        </div>
+        <div class="skill-title">Git Worktrees</div>
+        <div class="skill-desc">Cria branches isoladas com worktrees para desenvolvimento paralelo. Mantém a main limpa e permite múltiplos agentes simultâneos.</div>
+        <div class="skill-trigger">Ativa: <span>após aprovação do design doc</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(249,168,74,0.1)">📋</div>
+          <div><div class="skill-name">writing-plans</div></div>
+        </div>
+        <div class="skill-title">Planos de Implementação</div>
+        <div class="skill-desc">Quebra o design em tarefas de 2–5 minutos com caminhos exatos, código completo, comandos de verificação e mensagens de commit.</div>
+        <div class="skill-trigger">Comando: <span>/superpowers:write-plan</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(184,249,74,0.1)">⚡</div>
+          <div><div class="skill-name">executing-plans</div></div>
+        </div>
+        <div class="skill-title">Execução em Batch</div>
+        <div class="skill-desc">Executa o plano em lotes com checkpoints humanos. Review em dois estágios após cada tarefa antes de prosseguir.</div>
+        <div class="skill-trigger">Comando: <span>/superpowers:execute-plan</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(124,240,200,0.1)">🤖</div>
+          <div><div class="skill-name">dispatching-parallel-agents</div></div>
+        </div>
+        <div class="skill-title">Agentes Paralelos</div>
+        <div class="skill-desc">Orquestra múltiplos subagentes simultâneos, cada um em sessão isolada. O agente principal age como project manager.</div>
+        <div class="skill-trigger">Ativa: <span>tarefas independentes no plano</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(249,168,74,0.1)">🧪</div>
+          <div><div class="skill-name">test-driven-development</div></div>
+        </div>
+        <div class="skill-title">TDD — Red/Green/Refactor</div>
+        <div class="skill-desc">Impõe o ciclo RED-GREEN-REFACTOR sem negociação. Código escrito antes de testes é deletado e reiniciado. Zero exceções.</div>
+        <div class="skill-trigger">Ativa: <span>durante qualquer implementação</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(184,249,74,0.1)">🔍</div>
+          <div><div class="skill-name">requesting-code-review</div></div>
+        </div>
+        <div class="skill-title">Solicitação de Code Review</div>
+        <div class="skill-desc">Checklist pré-review. Revisa o trabalho contra o plano e reporta issues por severidade. Issues críticas bloqueam o progresso.</div>
+        <div class="skill-trigger">Ativa: <span>entre tarefas implementadas</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(124,240,200,0.1)">💬</div>
+          <div><div class="skill-name">receiving-code-review</div></div>
+        </div>
+        <div class="skill-title">Recebimento de Feedback</div>
+        <div class="skill-desc">Define como o agente processa e responde ao feedback do code review. Garante que issues sejam resolvidas antes de continuar.</div>
+        <div class="skill-trigger">Ativa: <span>após code review com issues</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(249,168,74,0.1)">🐛</div>
+          <div><div class="skill-name">systematic-debugging</div></div>
+        </div>
+        <div class="skill-title">Debugging Sistemático</div>
+        <div class="skill-desc">Metodologia em 4 fases: investigação da causa raiz → análise de padrões → hipótese → implementação. Bloqueia tentativas aleatórias de fix.</div>
+        <div class="skill-trigger">Ativa: <span>"tem um bug", "está quebrando"</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(184,249,74,0.1)">✅</div>
+          <div><div class="skill-name">finishing-a-development-branch</div></div>
+        </div>
+        <div class="skill-title">Finalização de Branch</div>
+        <div class="skill-desc">Verifica testes, apresenta opções (merge/PR/continuar/descartar) e limpa o worktree. Fecha o ciclo de desenvolvimento.</div>
+        <div class="skill-trigger">Ativa: <span>quando todas as tarefas do plano completam</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(124,240,200,0.1)">🧬</div>
+          <div><div class="skill-name">subagent-driven-development</div></div>
+        </div>
+        <div class="skill-title">Desenvolvimento com Subagentes</div>
+        <div class="skill-desc">Fast iteration com review em dois estágios: spec compliance primeiro, code quality depois. Permite horas de trabalho autônomo sem drift.</div>
+        <div class="skill-trigger">Ativa: <span>planos com múltiplas tarefas</span></div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-icon" style="background:rgba(249,168,74,0.1)">✍️</div>
+          <div><div class="skill-name">writing-skills</div></div>
+        </div>
+        <div class="skill-title">Criar Novas Skills</div>
+        <div class="skill-desc">Meta-skill que ensina a criar, testar e publicar novas skills usando os mesmos princípios de TDD aplicados à documentação.</div>
+        <div class="skill-trigger">Ativa: <span>"cria uma skill para X"</span></div>
+      </div>
+
+    </div>
+
+    <h3 style="margin-top: 3rem; margin-bottom:1rem;">Quick Reference — Comandos</h3>
+    <table>
+      <tr><th>Comando</th><th>Quando usar</th><th>Equivalente conversacional</th></tr>
+      <tr><td>/superpowers:brainstorm</td><td>Antes de qualquer feature complexa</td><td>"brainstorm this feature with me"</td></tr>
+      <tr><td>/superpowers:write-plan</td><td>Migrações, refactors multi-arquivo</td><td>"write a plan for this"</td></tr>
+      <tr><td>/superpowers:execute-plan</td><td>Executar o plano em batch</td><td>"execute the plan"</td></tr>
+      <tr><td>/superpowers:code-review</td><td>Review on-demand de qualquer código</td><td>"review this code"</td></tr>
+      <tr><td>/using-superpowers</td><td>Ver skills disponíveis na sessão atual</td><td>—</td></tr>
+      <tr><td>/plugin update superpowers</td><td>Atualizar o plugin</td><td>—</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- MULTI-AGENT -->
+<section id="multi-agent">
+  <div class="container">
+    <div class="section-label">04 — Arquitetura</div>
+    <h2>Setup Multi-Agente</h2>
+    <p style="color:#aaa; margin-bottom:2rem; font-size:0.95rem;">Múltiplos agentes em branches isoladas, cada um numa IDE própria, orquestrados por um agente principal.</p>
+
+    <div class="agent-diagram">
+      <div><span class="tree-green">main</span> <span class="tree-line">(protegida — nunca tocada diretamente)</span></div>
+      <div><span class="tree-line">│</span></div>
+      <div><span class="tree-line">├── </span><span class="tree-teal">worktree/feat-auth</span> <span class="tree-line">→ IDE 1 (Agent 1)</span></div>
+      <div><span class="tree-line">│     └── </span><span class="tree-line">implementa: login, JWT, refresh token</span></div>
+      <div><span class="tree-line">│</span></div>
+      <div><span class="tree-line">├── </span><span class="tree-teal">worktree/feat-api</span>  <span class="tree-line">→ IDE 2 (Agent 2)</span></div>
+      <div><span class="tree-line">│     └── </span><span class="tree-line">implementa: endpoints REST, validação</span></div>
+      <div><span class="tree-line">│</span></div>
+      <div><span class="tree-line">├── </span><span class="tree-teal">worktree/feat-ui</span>   <span class="tree-line">→ IDE 3 (Agent 3)</span></div>
+      <div><span class="tree-line">│     └── </span><span class="tree-line">implementa: componentes, design system</span></div>
+      <div><span class="tree-line">│</span></div>
+      <div><span class="tree-line">└── </span><span class="tree-orange">GitHub Actions (CI/CD)</span></div>
+      <div><span class="tree-line">      ├── </span><span class="tree-line">testa cada branch no push</span></div>
+      <div><span class="tree-line">      ├── </span><span class="tree-line">bloqueia merge se testes falham</span></div>
+      <div><span class="tree-line">      └── </span><span class="tree-line">code review automático via Claude API</span></div>
+    </div>
+
+    <div class="callout orange">
+      <strong>Regra crítica:</strong> O <code style="font-size:0.8rem">write-plan</code> DEVE ser feito antes de distribuir tasks entre agentes. Cada agente precisa ter um conjunto disjunto de arquivos para tocar — sem sobreposição. Conflitos de merge detectados pelo CI são remediação; mapeamento prévio é prevenção.
+    </div>
+
+    <h3 style="margin-top:2rem; margin-bottom:1rem;">Como iniciar cada agente</h3>
+    <div class="install-block">
+      <div class="install-header">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="install-title">Sequência por agente</span>
+      </div>
+      <div class="install-body">
+        <div class="cmd-line">
+          <span class="prompt">#</span>
+          <span class="cmd" style="color:var(--muted)">1. Criar worktree a partir do plano</span>
+        </div>
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd">git worktree add <span class="arg">../worktree-feat-auth</span> -b <span class="arg">feat/auth</span></span>
+        </div>
+        <div class="cmd-line" style="margin-top:0.5rem;">
+          <span class="prompt">#</span>
+          <span class="cmd" style="color:var(--muted)">2. Abrir IDE na pasta do worktree</span>
+        </div>
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd">code <span class="arg">../worktree-feat-auth</span></span>
+        </div>
+        <div class="cmd-line" style="margin-top:0.5rem;">
+          <span class="prompt">#</span>
+          <span class="cmd" style="color:var(--muted)">3. Iniciar Claude Code na IDE com o plano específico do agente</span>
+        </div>
+        <div class="cmd-line">
+          <span class="prompt">$</span>
+          <span class="cmd"><span class="slash">/superpowers:execute-plan</span> <span class="arg">plans/feat-auth-plan.md</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CI/CD -->
+<section id="cicd">
+  <div class="container">
+    <div class="section-label">05 — Automação</div>
+    <h2>GitHub Actions CI/CD</h2>
+    <p style="color:#aaa; margin-bottom:2rem; font-size:0.95rem;">Pipeline que atua como árbitro de qualidade para o setup multi-agente. Bloqueia merge se qualquer etapa falhar.</p>
+
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('ci-main')">Pipeline Principal</div>
+      <div class="tab" onclick="showTab('ci-review')">Code Review Automático</div>
+      <div class="tab" onclick="showTab('ci-skill')">Skill de CI/CD</div>
+    </div>
+
+    <div id="ci-main" class="tab-panel active">
+      <div class="yaml-block">
+        <div class="yaml-header">
+          <span class="file">.github/workflows/ci.yml</span>
+        </div>
+        <pre><span class="y-com"># Pipeline principal — roda em cada push de branch de agente</span>
+<span class="y-key">name</span>: <span class="y-val">Superpowers CI</span>
+
+<span class="y-key">on</span>:
+  <span class="y-key">push</span>:
+    <span class="y-key">branches</span>:
+      - <span class="y-str">'feat/**'</span>
+      - <span class="y-str">'fix/**'</span>
+      - <span class="y-str">'worktree/**'</span>
+  <span class="y-key">pull_request</span>:
+    <span class="y-key">branches</span>: [<span class="y-str">main</span>]
+
+<span class="y-key">jobs</span>:
+  <span class="y-key">quality-gate</span>:
+    <span class="y-key">runs-on</span>: <span class="y-val">ubuntu-latest</span>
+    <span class="y-key">steps</span>:
+      - <span class="y-key">uses</span>: <span class="y-val">actions/checkout@v4</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Setup</span>
+        <span class="y-key">uses</span>: <span class="y-val">actions/setup-node@v4</span>
+        <span class="y-key">with</span>:
+          <span class="y-key">node-version</span>: <span class="y-str">'20'</span>
+          <span class="y-key">cache</span>: <span class="y-str">'npm'</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Instalar dependências</span>
+        <span class="y-key">run</span>: <span class="y-val">npm ci</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Lint + Type Check</span>
+        <span class="y-key">run</span>: |
+          <span class="y-val">npm run lint</span>
+          <span class="y-val">npm run type-check</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Unit Tests</span>
+        <span class="y-key">run</span>: <span class="y-val">npm run test:unit -- --coverage</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Verificar Cobertura Mínima (85%)</span>
+        <span class="y-key">run</span>: |
+          <span class="y-val">COVERAGE=$(npm run test:coverage-json 2>/dev/null | jq '.total.lines.pct')</span>
+          <span class="y-val">if (( $(echo "$COVERAGE < 85" | bc -l) )); then</span>
+            <span class="y-val">echo "❌ Cobertura $COVERAGE% abaixo de 85%"</span>
+            <span class="y-val">exit 1</span>
+          <span class="y-val">fi</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Integration Tests</span>
+        <span class="y-key">run</span>: <span class="y-val">npm run test:integration</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Upload Coverage</span>
+        <span class="y-key">uses</span>: <span class="y-val">codecov/codecov-action@v4</span></pre>
+      </div>
+    </div>
+
+    <div id="ci-review" class="tab-panel">
+      <div class="yaml-block">
+        <div class="yaml-header">
+          <span class="file">.github/workflows/ai-review.yml</span>
+        </div>
+        <pre><span class="y-com"># Code review automático via Claude API em cada PR</span>
+<span class="y-key">name</span>: <span class="y-val">AI Code Review</span>
+
+<span class="y-key">on</span>:
+  <span class="y-key">pull_request</span>:
+    <span class="y-key">types</span>: [<span class="y-val">opened</span>, <span class="y-val">synchronize</span>]
+
+<span class="y-key">jobs</span>:
+  <span class="y-key">ai-review</span>:
+    <span class="y-key">runs-on</span>: <span class="y-val">ubuntu-latest</span>
+    <span class="y-key">permissions</span>:
+      <span class="y-key">pull-requests</span>: <span class="y-val">write</span>
+    <span class="y-key">steps</span>:
+      - <span class="y-key">uses</span>: <span class="y-val">actions/checkout@v4</span>
+        <span class="y-key">with</span>: { <span class="y-key">fetch-depth</span>: <span class="y-val">0</span> }
+
+      - <span class="y-key">name</span>: <span class="y-val">Obter diff do PR</span>
+        <span class="y-key">id</span>: <span class="y-val">diff</span>
+        <span class="y-key">run</span>: |
+          <span class="y-val">git diff origin/main...HEAD > pr_diff.txt</span>
+          <span class="y-val">echo "diff_size=$(wc -c < pr_diff.txt)" >> $GITHUB_OUTPUT</span>
+
+      - <span class="y-key">name</span>: <span class="y-val">Claude Code Review</span>
+        <span class="y-key">env</span>:
+          <span class="y-key">ANTHROPIC_API_KEY</span>: <span class="y-sym">${{ secrets.ANTHROPIC_API_KEY }}</span>
+          <span class="y-key">GH_TOKEN</span>: <span class="y-sym">${{ secrets.GITHUB_TOKEN }}</span>
+          <span class="y-key">PR_NUMBER</span>: <span class="y-sym">${{ github.event.number }}</span>
+          <span class="y-key">REPO</span>: <span class="y-sym">${{ github.repository }}</span>
+        <span class="y-key">run</span>: |
+          <span class="y-com">          # Chama Claude para revisar o diff</span>
+          <span class="y-val">REVIEW=$(curl -s https://api.anthropic.com/v1/messages \</span>
+            <span class="y-val">-H "x-api-key: $ANTHROPIC_API_KEY" \</span>
+            <span class="y-val">-H "anthropic-version: 2023-06-01" \</span>
+            <span class="y-val">-H "content-type: application/json" \</span>
+            <span class="y-val">-d "{</span>
+              <span class="y-val">\"model\": \"claude-opus-4-6\",</span>
+              <span class="y-val">\"max_tokens\": 2000,</span>
+              <span class="y-val">\"messages\": [{</span>
+                <span class="y-val">\"role\": \"user\",</span>
+                <span class="y-val">\"content\": \"Review este diff seguindo padrões TDD e YAGNI. Classifique issues como: CRÍTICO/ALTO/MÉDIO/BAIXO. CRÍTICO bloqueia merge.\\n\\n$(cat pr_diff.txt | head -c 8000)\"</span>
+              <span class="y-val">}]</span>
+            <span class="y-val">}" | jq -r '.content[0].text')</span>
+
+          <span class="y-com">          # Posta o review como comentário no PR</span>
+          <span class="y-val">gh pr comment $PR_NUMBER \</span>
+            <span class="y-val">--repo $REPO \</span>
+            <span class="y-val">--body "## 🤖 AI Code Review\n\n$REVIEW"</span></pre>
+      </div>
+    </div>
+
+    <div id="ci-skill" class="tab-panel">
+      <div class="yaml-block">
+        <div class="yaml-header">
+          <span class="file">.claude/skills/ci-cd/SKILL.md</span>
+        </div>
+        <pre><span class="y-com">---
+name: ci-cd
+description: Guia para CI/CD com GitHub Actions no setup multi-agente
+triggers:
+  - "ci falhou"
+  - "pipeline quebrou"
+  - "preciso de CI"
+---</span>
+
+<span class="y-val"># Skill: CI/CD com Superpowers</span>
+
+<span class="y-com">## Checks obrigatórios antes de qualquer PR</span>
+
+<span class="y-sym">1.</span> <span class="y-val">[ ] lint sem erros</span>
+<span class="y-sym">2.</span> <span class="y-val">[ ] type check passando</span>
+<span class="y-sym">3.</span> <span class="y-val">[ ] unit tests: cobertura >= 85%</span>
+<span class="y-sym">4.</span> <span class="y-val">[ ] integration tests passando</span>
+<span class="y-sym">5.</span> <span class="y-val">[ ] AI code review sem issues CRÍTICOS</span>
+
+<span class="y-com">## O que fazer se o CI falhar</span>
+
+<span class="y-key">LINT/TYPE ERROR:</span>
+<span class="y-val">  → rode npm run lint:fix e corrija manualmente o resto</span>
+
+<span class="y-key">COBERTURA ABAIXO DE 85%:</span>
+<span class="y-val">  → NÃO escreva código. Escreva os testes faltantes primeiro.</span>
+
+<span class="y-key">ISSUE CRÍTICO NO AI REVIEW:</span>
+<span class="y-val">  → Não abra novo PR. Resolva o issue na mesma branch.</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTRUTURA DE SKILLS -->
+<section id="estrutura">
+  <div class="container">
+    <div class="section-label">06 — Customização</div>
+    <h2>Estrutura de Skills do Projeto</h2>
+    <p style="color:#aaa; margin-bottom:2rem; font-size:0.95rem;">Skills customizadas para o seu projeto ficam em <code style="color:var(--accent2)">.claude/skills/</code> e são carregadas automaticamente pelo Claude Code.</p>
+
+    <div class="skills-dir">
+      <div><span style="color:var(--accent2)">.claude/</span></div>
+      <div>├── <span style="color:var(--accent2)">skills/</span></div>
+      <div>│   ├── <span style="color:var(--accent)">architecture/</span></div>
+      <div>│   │   └── <span style="color:var(--text)">SKILL.md</span> <span style="color:var(--muted)">← visão geral do sistema, camadas, princípios</span></div>
+      <div>│   ├── <span style="color:var(--accent)">api-patterns/</span></div>
+      <div>│   │   └── <span style="color:var(--text)">SKILL.md</span> <span style="color:var(--muted)">← convenções de rota, error handling, auth</span></div>
+      <div>│   ├── <span style="color:var(--accent)">components/</span></div>
+      <div>│   │   └── <span style="color:var(--text)">SKILL.md</span> <span style="color:var(--muted)">← padrões de componente, naming, estrutura</span></div>
+      <div>│   ├── <span style="color:var(--accent)">database/</span></div>
+      <div>│   │   └── <span style="color:var(--text)">SKILL.md</span> <span style="color:var(--muted)">← migrações, queries, padrões de acesso</span></div>
+      <div>│   └── <span style="color:var(--accent)">ci-cd/</span></div>
+      <div>│       └── <span style="color:var(--text)">SKILL.md</span> <span style="color:var(--muted)">← pipeline, o que fazer se CI falhar</span></div>
+      <div>└── <span style="color:var(--muted)">...</span></div>
+    </div>
+
+    <h3 style="margin-top:2.5rem; margin-bottom:1rem;">Anatomia de uma Skill</h3>
+    <div class="yaml-block">
+      <div class="yaml-header">
+        <span class="file">.claude/skills/sua-skill/SKILL.md</span>
+      </div>
+      <pre><span class="y-com">---
+name: sua-skill
+description: "Descrição curta — o Claude usa isso para decidir quando carregar"
+triggers:
+  - "palavras que ativam esta skill"
+  - "contexto que dispara o carregamento"
+---</span>
+
+<span class="y-val"># Nome da Skill</span>
+
+<span class="y-com">## Quando usar</span>
+<span class="y-val">Descreva o contexto específico em que esta skill se aplica.</span>
+
+<span class="y-com">## Processo obrigatório</span>
+<span class="y-sym">1.</span> <span class="y-val">Passo um — explícito e verificável</span>
+<span class="y-sym">2.</span> <span class="y-val">Passo dois — com critério de conclusão claro</span>
+<span class="y-sym">3.</span> <span class="y-val">Passo três — evidência, não promessa</span>
+
+<span class="y-com">## Checklist de conclusão</span>
+<span class="y-val">- [ ] Critério 1 atendido</span>
+<span class="y-val">- [ ] Critério 2 atendido</span>
+<span class="y-val">- [ ] Evidência gerada (testes passando, logs, etc.)</span>
+
+<span class="y-com">## Nunca faça</span>
+<span class="y-val">- Liste os atalhos proibidos específicos para esta skill</span></pre>
+    </div>
+
+    <div class="callout" style="margin-top:2rem;">
+      <strong>Dica:</strong> Peça ao Claude para criar skills a partir de livros técnicos, decisões de arquitetura ou lições aprendidas: <em style="color:#888">"Leia este documento de arquitetura e escreva as skills que garantem que futuras sessões sigam os mesmos padrões."</em>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Superpowers by <a href="https://github.com/obra">Jesse Vincent</a> · <a href="https://github.com/obra/superpowers">github.com/obra/superpowers</a> · MIT License</p>
+  <p style="margin-top:0.5rem; color:#444">Docs gerados para uso interno do projeto</p>
+</footer>
+
+<script>
+  function showStep(index) {
+    document.querySelectorAll('.pipeline-step').forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.step-detail').forEach((d, i) => {
+      d.classList.toggle('visible', i === index);
+    });
+  }
+
+  function showTab(id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ copiado';
+      btn.style.borderColor = 'var(--accent)';
+      btn.style.color = 'var(--accent)';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.borderColor = '';
+        btn.style.color = '';
+      }, 1800);
+    });
+  }
+</script>
+</body>
+</html>
